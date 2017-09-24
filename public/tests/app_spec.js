@@ -15,4 +15,26 @@ describe('LearnJS', function() {
 
     expect(learnjs.problemView).toHaveBeenCalledWith('42');
   })
+
+  describe('problem view', function() {
+    it('has a title that includes the problem number', function() {
+      var view = learnjs.problemView('1');
+      expect(view.text()).toEqual('Problem #1 Coming soon!');
+    });
+  });
+
+  it('invokes the router when loaded', function() {
+    spyOn(learnjs, 'showView');
+    learnjs.appOnReady();
+
+    expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
+  });
+
+  it('subscribes to the hash change event', function() {
+    learnjs.appOnReady();
+    spyOn(learnjs, 'showView');
+    $(window).trigger('hashchange');
+
+    expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
+  });
 });
